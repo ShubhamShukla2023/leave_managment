@@ -1,0 +1,44 @@
+<h1 class="text-center my-4">Leave Accept Reject</h1>
+
+<table class="table table-striped table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>Employee Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let leave of leaveRequests; let i = index">
+      <td>{{ leave.employeeName }}</td>
+      <td>{{ leave.startDate }}</td>
+      <td>{{ leave.endDate }}</td>
+      <td>
+        <div [ngSwitch]="leave.type">
+          <div *ngSwitchCase="'a'">Annual Leave</div>
+          <div *ngSwitchCase="'u'">Unpaid Leave</div>
+          <div *ngSwitchCase="'s'">Sick Leave</div>
+          <div *ngSwitchDefault>Invalid Leave Type</div>
+        </div>
+      </td>
+      <td>{{ leave.status }}</td>
+      <td>
+        <button
+          class="btn btn-success btn-sm"
+          (click)="updateLeaveStatus(leave.type, 'Approved', i)" *ngIf="leave.status === 'Pending'"
+        >
+          Accept
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="updateLeaveStatus(leave.type, 'Rejected', i)" *ngIf="leave.status === 'Pending'"
+        >
+          Reject
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

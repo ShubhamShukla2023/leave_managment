@@ -1,0 +1,80 @@
+<h1 class="text-center my-4">Leave Request</h1>
+
+<table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Employee Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Type</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let leave of leaveRequests">
+      <td>{{ leave.employeeName }}</td>
+      <td>{{ leave.startDate }}</td>
+      <td>{{ leave.endDate }}</td>
+      <td>
+        <div [ngSwitch]="leave.type">
+          <div *ngSwitchCase="'a'">Annual Leave</div>
+          <div *ngSwitchCase="'u'">Unpaid Leave</div>
+          <div *ngSwitchCase="'s'">Sick Leave</div>
+          <div *ngSwitchDefault>Invalid Leave Type</div>
+        </div>
+      </td>
+      <td>{{ leave.status }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<form (ngSubmit)="submitLeaveRequest()" #leaveForm="ngForm" class="p-4 border rounded bg-light">
+  <div class="form-group">
+    <label for="startDate">Start Date:</label>
+    <input
+      type="date"
+      id="startDate"
+      name="startDate"
+      [(ngModel)]="leaveRequest.startDate"
+      class="form-control"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="endDate">End Date:</label>
+    <input
+      type="date"
+      id="endDate"
+      name="endDate"
+      [(ngModel)]="leaveRequest.endDate"
+      class="form-control"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="type">Leave Type:</label>
+    <select
+      id="type"
+      name="type"
+      [(ngModel)]="leaveRequest.type"
+      class="form-control"
+      (change)="checkRemainLeave(leaveRequest.type)"
+      required
+    >
+      <option value="a">Annual</option>
+      <option value="s">Sick</option>
+      <option value="u">Unpaid</option>
+    </select>
+  </div>
+
+  <button
+    type="submit"
+    [ngClass]="{'btn-secondary': !isLeaveRemaining, 'btn-primary': isLeaveRemaining}"
+    class="btn"
+    [disabled]="!isLeaveRemaining"
+  >
+    Submit
+  </button>
+</form>
